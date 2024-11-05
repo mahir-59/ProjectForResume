@@ -18,16 +18,16 @@ namespace ProjectForResume.JwtToken
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            //string[] userPermissions = { "read", "write" };
+            string[] userPermissions = { "read", "write" };
             List<Claim> claims = new()
             {
                 new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
-            //foreach (string permission in userPermissions)
-            //{
-            //    claims.Add(new Claim("permissions", permission));
-            //}
+            foreach (string permission in userPermissions)
+            {
+                claims.Add(new Claim("permissions", permission));
+            }
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
